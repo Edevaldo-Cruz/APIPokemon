@@ -8,10 +8,13 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
   View,
+  ScrollView,
 } from "react-native";
+import { ProgressBar, Colors } from "react-native-paper";
+
 import { styles } from "./styles";
 
-export default function Busca({ navigation }) {
+export default function Busca() {
   [search, setSearch] = useState(null);
   [pokemon, setPokemon] = useState(null);
   [number, setNumber] = useState(null);
@@ -45,6 +48,7 @@ export default function Busca({ navigation }) {
     setAbiliity(ress.abilities[0].ability.name);
     setNumber(ress.game_indices[3].game_index);
     setType1(ress.types[0].type.name);
+
     setMove1(ress.moves[0].move.name);
     setMove2(ress.moves[1].move.name);
     setHp(ress.stats[0].base_stat);
@@ -56,81 +60,201 @@ export default function Busca({ navigation }) {
     Keyboard.dismiss();
   }
   return (
-    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-      <View>
-        <View style={styles.containerimg}>
-          <Image
-            style={styles.logo}
-            source={require("../../assest/logo.png")}
-          />
-        </View>
-
-        <View style={styles.containerBusca}>
-          <TextInput
-            style={styles.input}
-            onChangeText={(text) => setSearch(text)}
-            value={search}
-            placeholder="Buscar pokemons..."
-          />
-
-          <TouchableOpacity onPress={searchPokemons} style={styles.button}>
-            <Text style={styles.button__text}>Buscar</Text>
-          </TouchableOpacity>
-        </View>
-
-        {image && (
-          <View style={styles.card}>
-            <View style={styles.nameNumber}>
-              <Text style={styles.nameText}>{pokemon}</Text>
-              <Text>#{number}</Text>
-            </View>
-            <View>
-              <Image source={require("../../../src/assest/Pokeball.png")} />
-              <Image
-                style={{ width: 200, height: 150 }}
-                source={{
-                  uri: image,
-                }}
-              />
-              <View>
-                <Text>{type1}</Text>
-              </View>
-              <Text>Sobre</Text>
-              <View>
-                <View>
-                  <Text>{peso / 10} Kg</Text>
-                  <Text>Peso</Text>
-                </View>
-                <View>
-                  <Text>{altura / 10} m</Text>
-                  <Text>Altura</Text>
-                </View>
-                <View>
-                  <Text>{move1}</Text>
-                  <Text>{move2}</Text>
-                  <Text>Habilidades</Text>
-                </View>
-              </View>
-              <View>
-                <Text>Base Stats</Text>
-                <Text>HP</Text>
-                <Text>{hp}</Text>
-                <Text>ATK</Text>
-                <Text>{atk}</Text>
-                <Text>DEF</Text>
-                <Text>{def}</Text>
-                <Text>SATK</Text>
-                <Text>{satk}</Text>
-                <Text>SDEF</Text>
-                <Text>{sdef}</Text>
-                <Text>SPD</Text>
-                <Text>{spd}</Text>
-              </View>
-            </View>
-            <View style={styles.texto}></View>
+    <ScrollView>
+      <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+        <View>
+          <View style={styles.containerimg}>
+            <Image
+              style={styles.logo}
+              source={require("../../assest/logo.png")}
+            />
           </View>
-        )}
-      </View>
-    </TouchableWithoutFeedback>
+
+          <View style={styles.containerBusca}>
+            <TextInput
+              style={styles.input}
+              onChangeText={(text) => setSearch(text)}
+              value={search}
+              placeholder="Buscar pokemons..."
+            />
+
+            <TouchableOpacity onPress={searchPokemons} style={styles.button}>
+              <Text style={styles.button__text}>Buscar</Text>
+            </TouchableOpacity>
+          </View>
+
+          {image && (
+            <View style={styles.card}>
+              <View style={styles.nameNumber}>
+                <Text style={styles.nameText}>
+                  {pokemon[0].toUpperCase() + pokemon.substr(1)}
+                </Text>
+                <Text style={styles.number}>#{("000" + number).slice(-3)}</Text>
+              </View>
+              <View>
+                <View style={styles.containerPokeball}>
+                  <Image
+                    style={styles.pokeball}
+                    source={require("../../../src/assest/Pokeball.png")}
+                  />
+                </View>
+                <View style={styles.containerPokemon}>
+                  <Image
+                    style={styles.imgPokemon}
+                    source={{
+                      uri: image,
+                    }}
+                  />
+                </View>
+                <View style={styles.containerAbout}>
+                  <View style={styles.type}>
+                    <Text style={styles.TextType}>{type1}</Text>
+                  </View>
+                  <Text style={styles.title}>Sobre</Text>
+                  <View style={styles.containerInfo}>
+                    <View style={styles.info}>
+                      <View style={styles.row}>
+                        <Image
+                          style={styles.iconWeigth}
+                          source={require("../../assest/weigth.png")}
+                        />
+                        <Text style={styles.textAbout}>{peso / 10} Kg</Text>
+                      </View>
+                      <Text>Peso</Text>
+                    </View>
+                    <View style={styles.line} />
+                    <View style={styles.info}>
+                      <View style={styles.row}>
+                        <Image
+                          style={styles.iconHeight}
+                          source={require("../../assest/Height.png")}
+                        />
+                        <Text style={styles.textAbout}>{altura / 10} m</Text>
+                      </View>
+                      <Text>Altura</Text>
+                    </View>
+                    <View style={styles.line} />
+                    <View style={styles.info}>
+                      <Text style={styles.move}>{move1}</Text>
+                      <Text style={styles.move}>{move2}</Text>
+                      <Text>Habilidades</Text>
+                    </View>
+                  </View>
+                  <View>
+                    <Text style={styles.title}>Base Stats</Text>
+
+                    <View style={styles.containerStats}>
+                      <Text style={styles.textStats}>HP</Text>
+                      <View style={styles.lineStats} />
+                      <Text>{("000" + hp).slice(-3)}</Text>
+                      <ProgressBar
+                        progress={hp / 100}
+                        color={"#F9CF30"}
+                        style={{
+                          backgroundColor: "rgba(249, 207, 48, 0.4)",
+                          width: 213,
+                          height: 8,
+                          borderRadius: 8,
+                          marginRight: 20,
+                          marginLeft: 8,
+                        }}
+                      />
+                    </View>
+
+                    <View style={styles.containerStats}>
+                      <Text style={styles.textStats}>ATK</Text>
+                      <View style={styles.lineStats} />
+                      <Text>{("000" + atk).slice(-3)}</Text>
+                      <ProgressBar
+                        progress={atk / 100}
+                        color={"#F9CF30"}
+                        style={{
+                          backgroundColor: "rgba(249, 207, 48, 0.4)",
+                          width: 213,
+                          height: 8,
+                          borderRadius: 8,
+                          marginRight: 20,
+                          marginLeft: 8,
+                        }}
+                      />
+                    </View>
+
+                    <View style={styles.containerStats}>
+                      <Text style={styles.textStats}>DEF</Text>
+                      <View style={styles.lineStats} />
+                      <Text>{("000" + def).slice(-3)}</Text>
+                      <ProgressBar
+                        progress={def / 100}
+                        color={"#F9CF30"}
+                        style={{
+                          backgroundColor: "rgba(249, 207, 48, 0.4)",
+                          width: 213,
+                          height: 8,
+                          borderRadius: 8,
+                          marginRight: 20,
+                          marginLeft: 8,
+                        }}
+                      />
+                    </View>
+                    <View style={styles.containerStats}>
+                      <Text style={styles.textStats}>SATK</Text>
+                      <View style={styles.lineStats} />
+                      <Text>{("000" + satk).slice(-3)}</Text>
+                      <ProgressBar
+                        progress={satk / 100}
+                        color={"#F9CF30"}
+                        style={{
+                          backgroundColor: "rgba(249, 207, 48, 0.4)",
+                          width: 213,
+                          height: 8,
+                          borderRadius: 8,
+                          marginRight: 20,
+                          marginLeft: 8,
+                        }}
+                      />
+                    </View>
+                    <View style={styles.containerStats}>
+                      <Text style={styles.textStats}>SDEF</Text>
+                      <View style={styles.lineStats} />
+                      <Text>{("000" + sdef).slice(-3)}</Text>
+                      <ProgressBar
+                        progress={sdef / 100}
+                        color={"#F9CF30"}
+                        style={{
+                          backgroundColor: "rgba(249, 207, 48, 0.4)",
+                          width: 213,
+                          height: 8,
+                          borderRadius: 8,
+                          marginRight: 20,
+                          marginLeft: 8,
+                        }}
+                      />
+                    </View>
+                    <View style={styles.containerStats}>
+                      <Text style={styles.textStats}>SPD</Text>
+                      <View style={styles.lineStats} />
+                      <Text>{("000" + spd).slice(-3)}</Text>
+                      <ProgressBar
+                        progress={spd / 100}
+                        color={"#F9CF30"}
+                        style={{
+                          backgroundColor: "rgba(249, 207, 48, 0.4)",
+                          width: 213,
+                          height: 8,
+                          borderRadius: 8,
+                          marginRight: 20,
+                          marginLeft: 8,
+                        }}
+                      />
+                    </View>
+                  </View>
+                </View>
+              </View>
+              <View style={styles.texto}></View>
+            </View>
+          )}
+        </View>
+      </TouchableWithoutFeedback>
+    </ScrollView>
   );
 }

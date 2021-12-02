@@ -1,21 +1,29 @@
 import React from "react";
-import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { View } from "react-native";
+import {
+  useFonts,
+  Poppins_400Regular,
+  Poppins_700Bold,
+} from "@expo-google-fonts/poppins";
 
 import Busca from "./src/pages/Busca";
+import { StatusBar } from "react-native";
+import AppLoading from "expo-app-loading";
 
 export default function App() {
-  const Stack = createNativeStackNavigator();
+  const [fonteCarregada] = useFonts({
+    PoppinsBold: Poppins_700Bold,
+    PoppinsRegular: Poppins_400Regular,
+  });
+
+  if (!fonteCarregada) {
+    return <AppLoading />;
+  }
 
   return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen
-          name="Busca"
-          component={Busca}
-          options={{ headerShown: false }}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <View>
+      <StatusBar />
+      <Busca />
+    </View>
   );
 }
