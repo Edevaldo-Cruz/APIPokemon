@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
   card: {
     width: 360,
     height: 640,
-    backgroundColor: "#F9CF30",
+    backgroundColor: "#112233",
     borderRadius: 12,
     marginLeft: "auto",
     marginRight: "auto",
@@ -104,6 +104,8 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   type: {
+    flexDirection: "row",
+    justifyContent: "center",
     marginTop: 56,
     alignItems: "center",
   },
@@ -113,16 +115,17 @@ const styles = StyleSheet.create({
     fontFamily: "PoppinsBold",
     color: "#FFF",
     fontSize: 15,
-    backgroundColor: "#F9CF30",
+    backgroundColor: "#112233",
     borderRadius: 10,
     textAlign: "center",
+    marginLeft: 8,
   },
   title: {
     width: "100%",
     textAlign: "center",
     marginTop: 16,
     fontFamily: "PoppinsBold",
-    color: "#F9CF30",
+    color: "#112233",
     fontSize: 15,
     lineHeight: 18,
   },
@@ -152,6 +155,9 @@ const styles = StyleSheet.create({
     lineHeight: 20,
     marginLeft: 8,
   },
+  text: {
+    textAlign: "center",
+  },
   move: {
     fontFamily: "PoppinsRegular",
     fontSize: 15,
@@ -170,7 +176,7 @@ const styles = StyleSheet.create({
   textStats: {
     fontFamily: "PoppinsBold",
     textAlign: "right",
-    color: "#F9CF30",
+    color: "#112233",
     width: 32,
     height: 20,
     fontSize: 15,
