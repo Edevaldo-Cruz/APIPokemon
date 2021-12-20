@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+import typeColors from "./typeColors";
 
 const styles = StyleSheet.create({
   containerimg: {
@@ -45,16 +46,6 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontWeight: "bold",
     fontSize: 17,
-  },
-  card: {
-    width: 360,
-    height: 640,
-    backgroundColor: "#112233",
-    borderRadius: 12,
-    marginLeft: "auto",
-    marginRight: "auto",
-    marginTop: 8,
-    marginBottom: 30,
   },
   nameNumber: {
     flexDirection: "row",
@@ -109,17 +100,7 @@ const styles = StyleSheet.create({
     marginTop: 56,
     alignItems: "center",
   },
-  TextType: {
-    width: 78,
-    height: 25,
-    fontFamily: "PoppinsBold",
-    color: "#FFF",
-    fontSize: 15,
-    backgroundColor: "#112233",
-    borderRadius: 10,
-    textAlign: "center",
-    marginLeft: 8,
-  },
+
   title: {
     width: "100%",
     textAlign: "center",
@@ -173,16 +154,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
   },
-  textStats: {
-    fontFamily: "PoppinsBold",
-    textAlign: "right",
-    color: "#112233",
-    width: 32,
-    height: 20,
-    fontSize: 15,
-    lineHeight: 20,
-    marginLeft: 24,
-  },
+
   lineStats: {
     borderRightWidth: 1,
     borderRightColor: "#999",
