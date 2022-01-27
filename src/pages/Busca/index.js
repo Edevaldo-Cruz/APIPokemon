@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   Image,
   Keyboard,
@@ -15,25 +15,28 @@ import { styles } from "./styles";
 import typeColors from "./typeColors";
 
 export default function Busca() {
-  [search, setSearch] = useState(null);
-  [pokemon, setPokemon] = useState(null);
-  [number, setNumber] = useState(null);
-  [imagem, setImagem] = useState(null);
-  [peso, setPeso] = useState(null);
-  [altura, setAltura] = useState(null);
-  [abiliity, setAbiliity] = useState(null);
-  [type1, setType1] = useState(null);
-  [move1, setMove1] = useState(null);
-  [move2, setMove2] = useState(null);
-  [hp, setHp] = useState(null);
-  [atk, setAtk] = useState(null);
-  [def, setDef] = useState(null);
-  [satk, setSatk] = useState(null);
-  [sdef, setSdef] = useState(null);
-  [spd, setSpd] = useState(null);
-  [type2, setType2] = useState(null);
+  const [search, setSearch] = useState(null);
+  const [pokemon, setPokemon] = useState(null);
+  const [number, setNumber] = useState(null);
+  const [imagem, setImagem] = useState(null);
+  const [peso, setPeso] = useState(null);
+  const [altura, setAltura] = useState(null);
+  const [abiliity, setAbiliity] = useState(null);
+  const [type1, setType1] = useState(null);
+  const [move1, setMove1] = useState(null);
+  const [move2, setMove2] = useState(null);
+  const [hp, setHp] = useState(null);
+  const [atk, setAtk] = useState(null);
+  const [def, setDef] = useState(null);
+  const [satk, setSatk] = useState(null);
+  const [sdef, setSdef] = useState(null);
+  const [spd, setSpd] = useState(null);
+  const [type2, setType2] = useState(null);
 
   async function searchPokemons() {
+    if (type2 !== null) {
+      setType2(null);
+    }
     let reqs = await fetch("https://pokeapi.co/api/v2/pokemon/" + search, {
       method: "GET",
       headers: {

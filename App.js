@@ -6,6 +6,8 @@ import {
   Poppins_700Bold,
 } from "@expo-google-fonts/poppins";
 
+console.disableYellowBox = true;
+
 import Busca from "./src/pages/Busca";
 import { StatusBar } from "react-native";
 import AppLoading from "expo-app-loading";
