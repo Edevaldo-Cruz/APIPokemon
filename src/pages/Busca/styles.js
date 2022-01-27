@@ -115,7 +115,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   info: {
-    marginHorizontal: 24,
+    marginHorizontal: 18,
   },
   row: {
     flexDirection: "row",
@@ -137,12 +137,13 @@ const styles = StyleSheet.create({
     marginLeft: 8,
   },
   text: {
+    fontFamily: "PoppinsRegular",
     textAlign: "center",
   },
   move: {
     fontFamily: "PoppinsRegular",
-    fontSize: 15,
     lineHeight: 20,
+    textAlign: "center",
   },
   line: {
     borderRightWidth: 2,
@@ -160,6 +161,12 @@ const styles = StyleSheet.create({
     borderRightColor: "#999",
     height: 22,
     marginHorizontal: 8,
+  },
+  centeredView: {
+    height: "100%",
+    justifyContent: "flex-start",
+    alignItems: "flex-end",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
 });
 export { styles };

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Image,
   Keyboard,
@@ -7,7 +7,8 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
   View,
-  ScrollView,
+  Modal,
+  ActivityIndicator,
 } from "react-native";
 import { ProgressBar } from "react-native-paper";
 
@@ -15,8 +16,10 @@ import { styles } from "./styles";
 import typeColors from "./typeColors";
 
 export default function Busca() {
+  const [modalVisible, setModalVisible] = useState(false);
+
   const [search, setSearch] = useState(null);
-  const [pokemon, setPokemon] = useState(null);
+  const [pokemon, setPokemon] = useState();
   const [number, setNumber] = useState(null);
   const [imagem, setImagem] = useState(null);
   const [peso, setPeso] = useState(null);
@@ -34,6 +37,7 @@ export default function Busca() {
   const [type2, setType2] = useState(null);
 
   async function searchPokemons() {
+    setModalVisible(true);
     if (type2 !== null) {
       setType2(null);
     }
@@ -44,7 +48,6 @@ export default function Busca() {
         "Content-Type": "application/json",
       },
     });
-
     let ress = await reqs.json();
     setPokemon(ress.name);
     setImagem(ress.sprites.other.home.front_default);
@@ -66,328 +69,338 @@ export default function Busca() {
   }
 
   return (
-    <ScrollView>
-      <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-        <View>
-          <View style={styles.containerimg}>
-            <Image
-              style={styles.logo}
-              source={require("../../assest/logo.png")}
-            />
-          </View>
+    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+      <View>
+        <View style={styles.containerimg}>
+          <Image
+            style={styles.logo}
+            source={require("../../assest/logo.png")}
+          />
+        </View>
 
-          <View style={styles.containerBusca}>
-            <TextInput
-              style={styles.input}
-              onChangeText={(text) => setSearch(text)}
-              value={search}
-              placeholder="Buscar pokemons..."
-            />
+        <View style={styles.containerBusca}>
+          <TextInput
+            style={styles.input}
+            onChangeText={(text) => setSearch(text)}
+            value={search}
+            placeholder="Buscar pokemons..."
+          />
 
-            <TouchableOpacity onPress={searchPokemons} style={styles.button}>
-              <Text style={styles.button__text}>Buscar</Text>
-            </TouchableOpacity>
-          </View>
-
-          {type1 && (
-            <View
-              style={{
-                width: 360,
-                height: 640,
-                borderRadius: 12,
-                marginLeft: "auto",
-                marginRight: "auto",
-                marginTop: 8,
-                marginBottom: 30,
-                backgroundColor: typeColors[type1],
-              }}
-            >
-              <View style={styles.nameNumber}>
-                <Text style={styles.nameText}>
-                  {pokemon[0].toUpperCase() + pokemon.substr(1)}
-                </Text>
-                <Text style={styles.number}>#{("000" + number).slice(-3)}</Text>
-              </View>
-              <View>
-                <View style={styles.containerPokeball}>
-                  <Image
-                    style={styles.pokeball}
-                    source={require("../../../src/assest/Pokeball.png")}
-                  />
+          <TouchableOpacity onPress={searchPokemons} style={styles.button}>
+            <Text style={styles.button__text}>Buscar</Text>
+          </TouchableOpacity>
+        </View>
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => {
+            setModalVisible(!modalVisible);
+          }}
+        >
+          <View style={styles.centeredView}>
+            {type1 && (
+              <TouchableOpacity
+                style={{
+                  width: 360,
+                  height: 640,
+                  borderRadius: 12,
+                  marginLeft: "auto",
+                  marginRight: "auto",
+                  marginTop: 55,
+                  backgroundColor: typeColors[type1],
+                }}
+                onPress={() => setModalVisible(false)}
+              >
+                <View style={styles.nameNumber}>
+                  <Text style={styles.nameText}>
+                    {pokemon[0].toUpperCase() + pokemon.substr(1)}
+                  </Text>
+                  <Text style={styles.number}>
+                    #{("000" + number).slice(-3)}
+                  </Text>
                 </View>
-                <View style={styles.containerPokemon}>
-                  <Image
-                    style={styles.imgPokemon}
-                    source={{
-                      uri: imagem,
-                    }}
-                  />
-                </View>
-                <View style={styles.containerAbout}>
-                  <View style={styles.type}>
-                    <Text
-                      style={{
-                        backgroundColor: typeColors[type1],
-                        width: 78,
-                        height: 25,
-                        fontFamily: "PoppinsBold",
-                        color: "#FFF",
-                        fontSize: 15,
-                        borderRadius: 10,
-                        textAlign: "center",
-                        marginLeft: 8,
+                <View>
+                  <View style={styles.containerPokeball}>
+                    <Image
+                      style={styles.pokeball}
+                      source={require("../../../src/assest/Pokeball.png")}
+                    />
+                  </View>
+                  <View style={styles.containerPokemon}>
+                    <Image
+                      style={styles.imgPokemon}
+                      source={{
+                        uri: imagem,
                       }}
-                    >
-                      {type1}
-                    </Text>
-                    {type2 && (
+                    />
+                  </View>
+                  <View style={styles.containerAbout}>
+                    <View style={styles.type}>
                       <Text
                         style={{
+                          backgroundColor: typeColors[type1],
                           width: 78,
                           height: 25,
                           fontFamily: "PoppinsBold",
                           color: "#FFF",
                           fontSize: 15,
-                          backgroundColor: typeColors[type2],
                           borderRadius: 10,
                           textAlign: "center",
                           marginLeft: 8,
                         }}
                       >
-                        {type2}
+                        {type1}
                       </Text>
-                    )}
-                  </View>
+                      {type2 && (
+                        <Text
+                          style={{
+                            width: 78,
+                            height: 25,
+                            fontFamily: "PoppinsBold",
+                            color: "#FFF",
+                            fontSize: 15,
+                            backgroundColor: typeColors[type2],
+                            borderRadius: 10,
+                            textAlign: "center",
+                            marginLeft: 8,
+                          }}
+                        >
+                          {type2}
+                        </Text>
+                      )}
+                    </View>
 
-                  <Text style={styles.title}>Sobre</Text>
-                  <View style={styles.containerInfo}>
-                    <View style={styles.info}>
-                      <View style={styles.row}>
-                        <Image
-                          style={styles.iconWeigth}
-                          source={require("../../assest/weigth.png")}
-                        />
-                        <Text style={styles.textAbout}>{peso / 10} Kg</Text>
+                    <Text style={styles.title}>Sobre</Text>
+                    <View style={styles.containerInfo}>
+                      <View style={styles.info}>
+                        <View style={styles.row}>
+                          <Image
+                            style={styles.iconWeigth}
+                            source={require("../../assest/weigth.png")}
+                          />
+                          <Text style={styles.textAbout}>{peso / 10} Kg</Text>
+                        </View>
+                        <Text style={styles.text}>Peso</Text>
                       </View>
-                      <Text style={styles.text}>Peso</Text>
-                    </View>
-                    <View style={styles.line} />
-                    <View style={styles.info}>
-                      <View style={styles.row}>
-                        <Image
-                          style={styles.iconHeight}
-                          source={require("../../assest/Height.png")}
-                        />
-                        <Text style={styles.textAbout}>{altura / 10} m</Text>
+                      <View style={styles.line} />
+                      <View style={styles.info}>
+                        <View style={styles.row}>
+                          <Image
+                            style={styles.iconHeight}
+                            source={require("../../assest/Height.png")}
+                          />
+                          <Text style={styles.textAbout}>{altura / 10} m</Text>
+                        </View>
+                        <Text style={styles.text}>Altura</Text>
                       </View>
-                      <Text style={styles.text}>Altura</Text>
+                      <View style={styles.line} />
+                      <View style={styles.info}>
+                        <Text style={styles.move}>{move1}</Text>
+                        <Text style={styles.move}>{move2}</Text>
+                        <Text style={styles.text}>Habilidades</Text>
+                      </View>
                     </View>
-                    <View style={styles.line} />
-                    <View style={styles.info}>
-                      <Text style={styles.move}>{move1}</Text>
-                      <Text style={styles.move}>{move2}</Text>
-                      <Text style={styles.text}>Habilidades</Text>
-                    </View>
-                  </View>
-                  <View>
-                    <Text style={styles.title}>Base Stats</Text>
+                    <View>
+                      <Text style={styles.title}>Base Stats</Text>
 
-                    <View style={styles.containerStats}>
-                      <Text
-                        style={{
-                          fontFamily: "PoppinsBold",
-                          textAlign: "right",
-                          color: typeColors[type1],
-                          width: 32,
-                          height: 20,
-                          fontSize: 15,
-                          lineHeight: 20,
-                          marginLeft: 24,
-                        }}
-                      >
-                        HP
-                      </Text>
-                      <View style={styles.lineStats} />
-                      <Text>{("000" + hp).slice(-3)}</Text>
-                      <ProgressBar
-                        progress={hp / 100}
-                        color={typeColors[type1]}
-                        style={{
-                          backgroundColor: typeColors[type1],
-                          opacity: 0.4,
-                          width: 213,
-                          height: 8,
-                          borderRadius: 8,
-                          marginRight: 20,
-                          marginLeft: 8,
-                        }}
-                      />
-                    </View>
+                      <View style={styles.containerStats}>
+                        <Text
+                          style={{
+                            fontFamily: "PoppinsBold",
+                            textAlign: "right",
+                            color: typeColors[type1],
+                            width: 32,
+                            height: 20,
+                            fontSize: 15,
+                            lineHeight: 20,
+                            marginLeft: 24,
+                          }}
+                        >
+                          HP
+                        </Text>
+                        <View style={styles.lineStats} />
+                        <Text>{("000" + hp).slice(-3)}</Text>
+                        <ProgressBar
+                          progress={hp / 100}
+                          color={typeColors[type1]}
+                          style={{
+                            backgroundColor: typeColors[type1],
+                            opacity: 0.4,
+                            width: 213,
+                            height: 8,
+                            borderRadius: 8,
+                            marginRight: 20,
+                            marginLeft: 8,
+                          }}
+                        />
+                      </View>
 
-                    <View style={styles.containerStats}>
-                      <Text
-                        style={{
-                          fontFamily: "PoppinsBold",
-                          textAlign: "right",
-                          color: typeColors[type1],
-                          width: 32,
-                          height: 20,
-                          fontSize: 15,
-                          lineHeight: 20,
-                          marginLeft: 24,
-                        }}
-                      >
-                        ATK
-                      </Text>
-                      <View style={styles.lineStats} />
-                      <Text>{("000" + atk).slice(-3)}</Text>
-                      <ProgressBar
-                        progress={atk / 100}
-                        color={typeColors[type1]}
-                        style={{
-                          backgroundColor: typeColors[type1],
-                          opacity: 0.4,
-                          width: 213,
-                          height: 8,
-                          borderRadius: 8,
-                          marginRight: 20,
-                          marginLeft: 8,
-                        }}
-                      />
-                    </View>
+                      <View style={styles.containerStats}>
+                        <Text
+                          style={{
+                            fontFamily: "PoppinsBold",
+                            textAlign: "right",
+                            color: typeColors[type1],
+                            width: 32,
+                            height: 20,
+                            fontSize: 15,
+                            lineHeight: 20,
+                            marginLeft: 24,
+                          }}
+                        >
+                          ATK
+                        </Text>
+                        <View style={styles.lineStats} />
+                        <Text>{("000" + atk).slice(-3)}</Text>
+                        <ProgressBar
+                          progress={atk / 100}
+                          color={typeColors[type1]}
+                          style={{
+                            backgroundColor: typeColors[type1],
+                            opacity: 0.4,
+                            width: 213,
+                            height: 8,
+                            borderRadius: 8,
+                            marginRight: 20,
+                            marginLeft: 8,
+                          }}
+                        />
+                      </View>
 
-                    <View style={styles.containerStats}>
-                      <Text
-                        style={{
-                          fontFamily: "PoppinsBold",
-                          textAlign: "right",
-                          color: typeColors[type1],
-                          width: 32,
-                          height: 20,
-                          fontSize: 15,
-                          lineHeight: 20,
-                          marginLeft: 24,
-                        }}
-                      >
-                        DEF
-                      </Text>
-                      <View style={styles.lineStats} />
-                      <Text>{("000" + def).slice(-3)}</Text>
-                      <ProgressBar
-                        progress={def / 100}
-                        color={typeColors[type1]}
-                        style={{
-                          backgroundColor: typeColors[type1],
-                          opacity: 0.4,
-                          width: 213,
-                          height: 8,
-                          borderRadius: 8,
-                          marginRight: 20,
-                          marginLeft: 8,
-                        }}
-                      />
-                    </View>
-                    <View style={styles.containerStats}>
-                      <Text
-                        style={{
-                          fontFamily: "PoppinsBold",
-                          textAlign: "right",
-                          color: typeColors[type1],
-                          width: 32,
-                          height: 20,
-                          fontSize: 15,
-                          lineHeight: 20,
-                          marginLeft: 24,
-                        }}
-                      >
-                        SATK
-                      </Text>
-                      <View style={styles.lineStats} />
-                      <Text>{("000" + satk).slice(-3)}</Text>
-                      <ProgressBar
-                        progress={satk / 100}
-                        color={typeColors[type1]}
-                        style={{
-                          backgroundColor: typeColors[type1],
-                          opacity: 0.4,
-                          width: 213,
-                          height: 8,
-                          borderRadius: 8,
-                          marginRight: 20,
-                          marginLeft: 8,
-                        }}
-                      />
-                    </View>
-                    <View style={styles.containerStats}>
-                      <Text
-                        style={{
-                          fontFamily: "PoppinsBold",
-                          textAlign: "right",
-                          color: typeColors[type1],
-                          width: 32,
-                          height: 20,
-                          fontSize: 15,
-                          lineHeight: 20,
-                          marginLeft: 24,
-                        }}
-                      >
-                        SDEF
-                      </Text>
-                      <View style={styles.lineStats} />
-                      <Text>{("000" + sdef).slice(-3)}</Text>
-                      <ProgressBar
-                        progress={sdef / 100}
-                        color={typeColors[type1]}
-                        style={{
-                          backgroundColor: typeColors[type1],
-                          opacity: 0.4,
-                          width: 213,
-                          height: 8,
-                          borderRadius: 8,
-                          marginRight: 20,
-                          marginLeft: 8,
-                        }}
-                      />
-                    </View>
-                    <View style={styles.containerStats}>
-                      <Text
-                        style={{
-                          fontFamily: "PoppinsBold",
-                          textAlign: "right",
-                          color: typeColors[type1],
-                          width: 32,
-                          height: 20,
-                          fontSize: 15,
-                          lineHeight: 20,
-                          marginLeft: 24,
-                        }}
-                      >
-                        SPD
-                      </Text>
-                      <View style={styles.lineStats} />
-                      <Text>{("000" + spd).slice(-3)}</Text>
-                      <ProgressBar
-                        progress={spd / 100}
-                        color={typeColors[type1]}
-                        style={{
-                          backgroundColor: typeColors[type1],
-                          opacity: 0.4,
-                          width: 213,
-                          height: 8,
-                          borderRadius: 8,
-                          marginRight: 20,
-                          marginLeft: 8,
-                        }}
-                      />
+                      <View style={styles.containerStats}>
+                        <Text
+                          style={{
+                            fontFamily: "PoppinsBold",
+                            textAlign: "right",
+                            color: typeColors[type1],
+                            width: 32,
+                            height: 20,
+                            fontSize: 15,
+                            lineHeight: 20,
+                            marginLeft: 24,
+                          }}
+                        >
+                          DEF
+                        </Text>
+                        <View style={styles.lineStats} />
+                        <Text>{("000" + def).slice(-3)}</Text>
+                        <ProgressBar
+                          progress={def / 100}
+                          color={typeColors[type1]}
+                          style={{
+                            backgroundColor: typeColors[type1],
+                            opacity: 0.4,
+                            width: 213,
+                            height: 8,
+                            borderRadius: 8,
+                            marginRight: 20,
+                            marginLeft: 8,
+                          }}
+                        />
+                      </View>
+                      <View style={styles.containerStats}>
+                        <Text
+                          style={{
+                            fontFamily: "PoppinsBold",
+                            textAlign: "right",
+                            color: typeColors[type1],
+                            width: 32,
+                            height: 20,
+                            fontSize: 15,
+                            lineHeight: 20,
+                            marginLeft: 24,
+                          }}
+                        >
+                          SATK
+                        </Text>
+                        <View style={styles.lineStats} />
+                        <Text>{("000" + satk).slice(-3)}</Text>
+                        <ProgressBar
+                          progress={satk / 100}
+                          color={typeColors[type1]}
+                          style={{
+                            backgroundColor: typeColors[type1],
+                            opacity: 0.4,
+                            width: 213,
+                            height: 8,
+                            borderRadius: 8,
+                            marginRight: 20,
+                            marginLeft: 8,
+                          }}
+                        />
+                      </View>
+                      <View style={styles.containerStats}>
+                        <Text
+                          style={{
+                            fontFamily: "PoppinsBold",
+                            textAlign: "right",
+                            color: typeColors[type1],
+                            width: 32,
+                            height: 20,
+                            fontSize: 15,
+                            lineHeight: 20,
+                            marginLeft: 24,
+                          }}
+                        >
+                          SDEF
+                        </Text>
+                        <View style={styles.lineStats} />
+                        <Text>{("000" + sdef).slice(-3)}</Text>
+                        <ProgressBar
+                          progress={sdef / 100}
+                          color={typeColors[type1]}
+                          style={{
+                            backgroundColor: typeColors[type1],
+                            opacity: 0.4,
+                            width: 213,
+                            height: 8,
+                            borderRadius: 8,
+                            marginRight: 20,
+                            marginLeft: 8,
+                          }}
+                        />
+                      </View>
+                      <View style={styles.containerStats}>
+                        <Text
+                          style={{
+                            fontFamily: "PoppinsBold",
+                            textAlign: "right",
+                            color: typeColors[type1],
+                            width: 32,
+                            height: 20,
+                            fontSize: 15,
+                            lineHeight: 20,
+                            marginLeft: 24,
+                          }}
+                        >
+                          SPD
+                        </Text>
+                        <View style={styles.lineStats} />
+                        <Text>{("000" + spd).slice(-3)}</Text>
+                        <ProgressBar
+                          progress={spd / 100}
+                          color={typeColors[type1]}
+                          style={{
+                            backgroundColor: typeColors[type1],
+                            opacity: 0.4,
+                            width: 213,
+                            height: 8,
+                            borderRadius: 8,
+                            marginRight: 20,
+                            marginLeft: 8,
+                          }}
+                        />
+                      </View>
                     </View>
                   </View>
                 </View>
-              </View>
-              <View style={styles.texto}></View>
-            </View>
-          )}
-        </View>
-      </TouchableWithoutFeedback>
-    </ScrollView>
+                <View style={styles.texto}></View>
+              </TouchableOpacity>
+            )}
+          </View>
+        </Modal>
+      </View>
+    </TouchableWithoutFeedback>
   );
 }
