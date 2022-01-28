@@ -150,7 +150,7 @@ export default function Busca() {
                           marginLeft: 8,
                         }}
                       >
-                        {type1}
+                        {type1[0].toUpperCase() + type1.substr(1)}
                       </Text>
                       {type2 && (
                         <Text
@@ -166,12 +166,24 @@ export default function Busca() {
                             marginLeft: 8,
                           }}
                         >
-                          {type2}
+                          {type2[0].toUpperCase() + type2.substr(1)}
                         </Text>
                       )}
                     </View>
 
-                    <Text style={styles.title}>Sobre</Text>
+                    <Text
+                      style={{
+                        width: "100%",
+                        textAlign: "center",
+                        marginTop: 16,
+                        fontFamily: "PoppinsBold",
+                        color: typeColors[type1],
+                        fontSize: 15,
+                        lineHeight: 18,
+                      }}
+                    >
+                      Sobre
+                    </Text>
                     <View style={styles.containerInfo}>
                       <View style={styles.info}>
                         <View style={styles.row}>
@@ -181,7 +193,9 @@ export default function Busca() {
                           />
                           <Text style={styles.textAbout}>{peso / 10} Kg</Text>
                         </View>
-                        <Text style={styles.text}>Peso</Text>
+                        <View style={styles.containerText}>
+                          <Text style={styles.text}>Peso</Text>
+                        </View>
                       </View>
                       <View style={styles.line} />
                       <View style={styles.info}>
@@ -192,17 +206,31 @@ export default function Busca() {
                           />
                           <Text style={styles.textAbout}>{altura / 10} m</Text>
                         </View>
-                        <Text style={styles.text}>Altura</Text>
+                        <View style={styles.containerText}>
+                          <Text style={styles.text}>Altura</Text>
+                        </View>
                       </View>
                       <View style={styles.line} />
                       <View style={styles.info}>
                         <Text style={styles.move}>{move1}</Text>
                         <Text style={styles.move}>{move2}</Text>
-                        <Text style={styles.text}>Habilidades</Text>
+                        <Text style={styles.text}>Movimentos</Text>
                       </View>
                     </View>
                     <View>
-                      <Text style={styles.title}>Base Stats</Text>
+                      <Text
+                        style={{
+                          width: "100%",
+                          textAlign: "center",
+                          marginTop: 16,
+                          fontFamily: "PoppinsBold",
+                          color: typeColors[type1],
+                          fontSize: 15,
+                          lineHeight: 18,
+                        }}
+                      >
+                        Base Stats
+                      </Text>
 
                       <View style={styles.containerStats}>
                         <Text

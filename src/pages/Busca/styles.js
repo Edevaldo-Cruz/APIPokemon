@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
   number: {
     fontFamily: "PoppinsBold",
     color: "#FFF",
-    fontSize: 15,
+    fontSize: 18,
     lineHeight: 32,
   },
   containerPokeball: {
@@ -136,9 +136,15 @@ const styles = StyleSheet.create({
     lineHeight: 20,
     marginLeft: 8,
   },
+  containerText: {
+    height: 30,
+    justifyContent: "flex-end",
+  },
   text: {
     fontFamily: "PoppinsRegular",
     textAlign: "center",
+    fontSize: 12,
+    opacity: 0.5,
   },
   move: {
     fontFamily: "PoppinsRegular",
