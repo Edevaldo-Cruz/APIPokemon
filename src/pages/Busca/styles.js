@@ -1,5 +1,4 @@
 import { StyleSheet } from "react-native";
-import typeColors from "./typeColors";
 
 const styles = StyleSheet.create({
   containerimg: {

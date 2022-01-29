@@ -19,7 +19,7 @@ export default function Busca() {
   const [modalVisible, setModalVisible] = useState(false);
 
   const [search, setSearch] = useState(null);
-  const [pokemon, setPokemon] = useState();
+  const [pokemon, setPokemon] = useState(null);
   const [number, setNumber] = useState(null);
   const [imagem, setImagem] = useState(null);
   const [peso, setPeso] = useState(null);
